@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>My note collection</title>
+    <title data-lang data-lang-es="Mi colección de notas" data-lang-en="My note collection">Mi colección de notas</title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
@@ -14,9 +14,21 @@
    <div class="navbar-fixed">
       <nav>
         <div class="nav-wrapper">
-          <%= link_to notes_path, class: 'brand-logo center' do %>
-            My note collection
+          <%= link_to notes_path, class: 'brand-logo center', data: { lang: '', lang_es: 'Mi colección de notas', lang_en: 'My note collection' } do %>
+            Mi colección de notas
           <% end %>
+          <ul id="nav-mobile" class="right">
+            <li>
+              <a href="#" id="toggle-dark-mode" class="btn-floating btn-small tooltipped" data-tooltip="Cambiar tema" data-lang-es="Cambiar tema" data-lang-en="Toggle Theme">
+                <%= material_icon.brightness_4 %>
+              </a>
+            </li>
+            <li>
+              <a href="#" id="toggle-language" class="btn-floating btn-small tooltipped" data-tooltip="Cambiar idioma" data-lang-es="Cambiar idioma" data-lang-en="Toggle Language">
+                <%= material_icon.language %>
+              </a>
+            </li>
+          </ul>
         </div>
       </nav>
     </div>

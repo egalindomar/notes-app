@@ -3,29 +3,61 @@
 <div class="row">
   <%= form_for :filters, html: { class: 'input-field col s12' }, method: 'get' do |f| %>
     <%= material_icon.search.css_class('prefix') %>
-    <%= f.text_field :title, autofocus: true, placeholder: 'Search by title', value: params.dig(:filters, :title) %>
-  <% end %>
-
-  <% @notes.each do |note| %>
-    <%= link_to note_path(note) do %>
-      <div class="col s12">
-        <div class="card">
-          <div class="card-content black-text">
-            <span class="card-title">
-              <%= note.title %>
-              <span class="right" style="font-size: 50%">
-                <%= format_as_localtime note.created_at %>
-              </span>
-            </span>
-          </div>
-        </div>
-      </div>
-    <% end %>
+    <%= f.text_field :title, autofocus: true, placeholder: 'Buscar', value: params.dig(:filters, :title), data: { lang: '', lang_es: 'Buscar', lang_en: 'Search' } %>
   <% end %>
 </div>
 
+<div class="row">
+  <div class="input-field col s12">
+    <label for="order-selector">Ordenar por</label>
+    <select id="order-selector">
+      <option value="created_at_desc">Más reciente a más antiguo</option>
+      <option value="created_at_asc">Más antiguo a más reciente</option>
+      <option value="title_asc">Alfabético A-Z</option>
+      <option value="title_desc">Alfabético Z-A</option>
+    </select>
+  </div>
+</div>
+
+<% @notes_by_month.each do |month, notes| %>
+  <h2><%= month.strftime("%B %Y") %></h2>
+  <div class="notes-grid">
+    <% notes.each do |note| %>
+      <%= link_to note_path(note) do %>
+        <div class="note-card">
+          <div class="card">
+            <div class="card-content black-text">
+              <span class="card-title">
+                <%= note.title %>
+                <span class="right" style="font-size: 50%">
+                  <%= format_as_localtime note.created_at %>
+                </span>
+              </span>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    <% end %>
+  </div>
+<% end %>
+
 <div class="fixed-action-btn">
-  <%= link_to new_note_path, title: 'New note', class: 'btn-floating btn-large pulse' do %>
+  <%= link_to new_note_path, class: 'btn-floating btn-large pulse tooltipped', data: { tooltip: 'Nueva Nota', lang_es: 'Nueva Nota', lang_en: 'New Note'} do %>
     <%= material_icon.add %>
   <% end %>
 </div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const orderSelector = document.getElementById('order-selector');
+    const savedOrder = localStorage.getItem('order') || 'created_at_desc';
+    orderSelector.value = savedOrder;
+
+    M.FormSelect.init(orderSelector);
+
+    orderSelector.addEventListener('change', function() {
+      localStorage.setItem('order', orderSelector.value);
+      window.location.search = `order=${orderSelector.value}`;
+    });
+  });
+</script>

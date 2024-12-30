@@ -31,3 +31,7 @@
 
 en:
   hello: "Hello world"
+  notices:
+    note_created: "Note was successfully created."
+    note_updated: "Note was successfully updated."
+    note_destroyed: "Note was successfully destroyed."

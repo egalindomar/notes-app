@@ -5,3 +5,77 @@
 $primary-color: color("red", "base") !default;
 $secondary-color: color("red", "base") !default;
 @import "materialize";
+
+body.dark-mode {
+    background-color: #121212;
+    color: #ffffff;
+  }
+  
+  body.dark-mode .card {
+    background-color: #1e1e1e;
+    color: #ffffff;
+  }
+  
+  body.dark-mode .input-field input[type="text"] {
+    background-color: #333333;
+    color: #ffffff;
+  }
+  
+  body.dark-mode .card-title,
+  body.dark-mode textarea,
+  body.dark-mode .card-content,
+  body.dark-mode .input-field label,
+  body.dark-mode .input-field input[type="text"]::placeholder {
+    color: #ffffff;
+  }
+  
+  .card-title .left {
+    margin-right: 10px;
+  }
+  
+  /* Button styles for dark mode toggle */
+  #toggle-dark-mode {
+    background-color: #ffffff;
+    color: #000000;
+  }
+  
+  body.dark-mode #toggle-dark-mode {
+    background-color: #000000;
+    color: #ffffff;
+  }
+  
+  /* Icon styles for dark mode toggle */
+  #toggle-dark-mode .material-icons {
+    color: #000000;
+  }
+  
+  body.dark-mode #toggle-dark-mode .material-icons {
+    color: #ffffff;
+  }
+
+  .material-icons {
+    color: #000000;
+  }
+  
+  body.dark-mode .material-icons {
+    color: #ffffff;
+  }
+
+  .notes-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 16px;
+  
+    @media (min-width: 600px) {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  
+    @media (min-width: 992px) {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+  
+  .note-card {
+    display: flex;
+    flex-direction: column;
+  }

@@ -1,15 +1,17 @@
 class NotesController < ApplicationController
   before_action :set_note, only: %i[ show edit update destroy ]
-
   def index
-    @notes = Note.order(created_at: :desc)
+    order = params[:order] || 'created_at_desc'
+    @notes_by_month = Note.order_by(order).group_by { |note| note.created_at.beginning_of_month }
 
     filters = params[:filters]&.to_unsafe_h&.symbolize_keys
     if filters && filters[:title].present?
-      @notes = @notes.search_by_title(filters[:title])
+      @notes_by_month = @notes_by_month.transform_values do |notes|
+        notes.select { |note| note.title.include?(filters[:title]) }
+      end
     end
-
-    @notes
+    
+    @notice = I18n.t('notices.note_created')
   end
 
   def show
@@ -24,10 +26,11 @@ class NotesController < ApplicationController
 
   def create
     @note = Note.new(note_params)
+    @note.created_at = params[:note][:local_created_at] if params[:note][:local_created_at].present?
 
     respond_to do |format|
       if @note.save
-        format.html { redirect_to note_url(@note), notice: "Note was successfully created." }
+        format.html { redirect_to notes_url(new_note_id: @note.id), notice: I18n.t('notices.note_created') }
         format.json { render :show, status: :created, location: @note }
       else
         format.html { render :new, status: :unprocessable_entity }
@@ -39,7 +42,7 @@ class NotesController < ApplicationController
   def update
     respond_to do |format|
       if @note.update(note_params)
-        format.html { redirect_to note_url(@note), notice: "Note was successfully updated." }
+        format.html { redirect_to note_url(@note), notice: I18n.t('notices.note_updated')}
         format.json { render :show, status: :ok, location: @note }
       else
         format.html { render :edit, status: :unprocessable_entity }
@@ -51,7 +54,7 @@ class NotesController < ApplicationController
   def destroy
     @note.destroy
     respond_to do |format|
-      format.html { redirect_to notes_url, notice: "Note was successfully destroyed." }
+      format.html { redirect_to notes_url, notice: I18n.t('notices.note_destroyed') }
       format.json { head :no_content }
     end
   end

@@ -1,0 +1,5 @@
+es:
+  notices:
+    note_created: "Nota creada con éxito."
+    note_updated: "Nota actualizada con éxito."
+    note_destroyed: "Nota eliminada con éxito."

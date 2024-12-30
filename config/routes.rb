@@ -1,4 +1,9 @@
 Rails.application.routes.draw do
-  resources :notes
-  root to: redirect("notes")
+  root 'notes#index'
+
+  resources :notes, path: '', except: [:index] do
+    collection do
+      get '', to: 'notes#index', as: :root
+    end
+  end
 end
